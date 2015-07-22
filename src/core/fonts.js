@@ -6330,8 +6330,14 @@ var CFFParser = (function CFFParserClosure() {
                 warn('Not enough parameters for ' + validationCommand.id +
                      '; actual: ' + stackSize +
                      ', expected: ' + validationCommand.min);
-                valid = false;
-                break;
+
+                // When an invalid operation is encountered, rather than
+                // completely invalidating the glyph, ignore the operation,
+                // reset the stack, but continue.
+                // Note: May result in glyphs being output that aren't
+                // completely accurate
+                stack = [];
+                continue;
               }
             }
             if (firstStackClearing && validationCommand.stackClearing) {
